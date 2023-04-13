@@ -65,8 +65,8 @@ export default function App() {
             <React.Fragment key=".0">
               {/* Desktop */}
               <Navbar.Collapse className="hidden md:block">
-                <Navbar.Link href="/navbars">Blog</Navbar.Link>
-                <Navbar.Link href="/navbars">Gallery</Navbar.Link>
+                <Navbar.Link href="/blog">Blog</Navbar.Link>
+                <Navbar.Link href="/gallery">Gallery</Navbar.Link>
               </Navbar.Collapse>
 
               {/* Logo */}
@@ -81,16 +81,16 @@ export default function App() {
 
               {/* Desktop */}
               <Navbar.Collapse className="hidden md:block">
-                <Navbar.Link href="/navbars">O nas</Navbar.Link>
-                <Navbar.Link href="/navbars">Contact</Navbar.Link>
+                <Navbar.Link href="/about">O nas</Navbar.Link>
+                <Navbar.Link href="/contact">Contact</Navbar.Link>
               </Navbar.Collapse>
 
               {/* Mobile Menu Items */}
               <Navbar.Collapse className="block md:hidden">
-                <Navbar.Link href="/navbars">Blog</Navbar.Link>
-                <Navbar.Link href="/navbars">Gallery</Navbar.Link>
-                <Navbar.Link href="/navbars">O nas</Navbar.Link>
-                <Navbar.Link href="/navbars">Contact</Navbar.Link>
+                <Navbar.Link href="/blog">Blog</Navbar.Link>
+                <Navbar.Link href="/gallery">Gallery</Navbar.Link>
+                <Navbar.Link href="/about">O nas</Navbar.Link>
+                <Navbar.Link href="/contact">Contact</Navbar.Link>
               </Navbar.Collapse>
             </React.Fragment>
           </Navbar>
