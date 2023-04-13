@@ -1,6 +1,7 @@
 import type { MetaFunction } from "@remix-run/cloudflare";
-import { Navbar } from "flowbite-react";
-import React from "react";
+import type { MotionValue } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -10,49 +11,65 @@ export const meta: MetaFunction = () => ({
 });
 
 export default function Index() {
+  // for the scrolling progress bar
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      {/* Used 3xl here, but feel free to try other max-widths based on your needs */}
-      <div className="mx-auto max-w-3xl">
-        <Navbar>
-          <React.Fragment key=".0">
-            {/* Desktop */}
-            <Navbar.Collapse className="hidden md:block">
-              <Navbar.Link href="/navbars">Blog</Navbar.Link>
-              <Navbar.Link href="/navbars">Gallery</Navbar.Link>
-            </Navbar.Collapse>
+    <main>
+      {/* each site section should have it's place on the landing page */}
+      {[1, 2, 3, 4, 5].map((item, idx) => (
+        <Section key={idx} item={item} />
+      ))}
 
-            {/* Logo */}
-            <Navbar.Brand href="https://flowbite.com/">
-              <img
-                alt="vanderfulife logo"
-                className="mr-3 h-6 sm:h-9"
-                src="/logo.svg"
-              />
-              <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-                vanderfulife
-              </span>
-            </Navbar.Brand>
+      {/* scrollig progress bar */}
+      <motion.div
+        className="fixed left-0 right-0 h-1 bg-black bottom-2"
+        style={{ scaleX }}
+      />
+    </main>
+  );
+}
 
-            {/* Mobile Hamburger */}
-            <Navbar.Toggle />
+// for the floating text on the section images
+function useParallax(value: MotionValue<number>, distance: number) {
+  return useTransform(value, [0, 1], [-distance, distance]);
+}
 
-            {/* Desktop */}
-            <Navbar.Collapse className="hidden md:block">
-              <Navbar.Link href="/navbars">O nas</Navbar.Link>
-              <Navbar.Link href="/navbars">Contact</Navbar.Link>
-            </Navbar.Collapse>
+function Section({ item }: { item: number }) {
+  const ref = useRef(null);
 
-            {/* Mobile Menu Items */}
-            <Navbar.Collapse className="block md:hidden">
-              <Navbar.Link href="/navbars">Blog</Navbar.Link>
-              <Navbar.Link href="/navbars">Gallery</Navbar.Link>
-              <Navbar.Link href="/navbars">O nas</Navbar.Link>
-              <Navbar.Link href="/navbars">Contact</Navbar.Link>
-            </Navbar.Collapse>
-          </React.Fragment>
-        </Navbar>
+  // for the floating text on the section images
+  const { scrollYProgress } = useScroll({ target: ref });
+  const y = useParallax(scrollYProgress, 300);
+
+  return (
+    <section
+      // TODO - check what this does
+      style={{ perspective: 500 }}
+      className="h-screen flex justify-center items-center relative snap-center">
+      <div
+        // TODO - check image sizes
+        className="w-3/5 h-4/5 relative max-h-90vh m-20 bg-white overflow-hidden"
+        ref={ref}
+      >
+        <img
+          className="absolute inset-0 w-full h-ful"
+          // TODO - update image src
+          src="https://i9gwuc.csb.app/1.jpg"
+          alt=""
+        />
       </div>
-    </div>
+
+      {/* Floating text */}
+      <motion.h2
+        className="m-0 text-black left-1/2 translate-x-130 text-[56px] font-bold tracking-wider leading-tight absolute"
+        style={{ y }}
+      >{`#00${item}`}</motion.h2>
+    </section>
   );
 }
